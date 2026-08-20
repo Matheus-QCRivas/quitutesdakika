@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import { useMemo, useState } from "react";
-import { WHATSAPP } from "@/lib/config";
+import { SINAL_PERCENTUAL, WHATSAPP } from "@/lib/config";
 import { produtos, type Produto } from "@/lib/produtos";
 
 const GRUPOS: { categoria: Produto["categoria"]; titulo: string }[] = [
@@ -12,7 +12,14 @@ const GRUPOS: { categoria: Produto["categoria"]; titulo: string }[] = [
 
 /** Formatação fixa em pt-BR para o markup bater no servidor e no cliente. */
 function emReais(valor: number) {
-  return `R$ ${valor.toFixed(2).replace(".", ",")}`;
+  const [inteiro, centavos] = valor.toFixed(2).split(".");
+  const grupos: string[] = [];
+
+  for (let fim = inteiro.length; fim > 0; fim -= 3) {
+    grupos.unshift(inteiro.slice(Math.max(0, fim - 3), fim));
+  }
+
+  return `R$ ${grupos.join(".")},${centavos}`;
 }
 
 type Carrinho = Record<string, number>;
@@ -33,6 +40,14 @@ export default function Cardapio() {
   );
 
   const vazio = selecionados.length === 0;
+  const semWhatsapp = WHATSAPP.trim() === "";
+  const bloqueado = vazio || semWhatsapp;
+
+  const aviso = semWhatsapp
+    ? "Os pedidos pelo WhatsApp estão indisponíveis no momento. Fale com a Kika pelo Instagram."
+    : vazio
+      ? "Escolha ao menos um item para enviar o pedido."
+      : null;
 
   function ajustar(id: string, delta: number) {
     setCarrinho((atual) => {
@@ -49,10 +64,14 @@ export default function Cardapio() {
   }
 
   function enviarPedido() {
+    if (bloqueado) return;
+
     const linhas = selecionados.map(
       ({ produto, quantidade }) =>
         `- ${quantidade}x ${produto.nome} (${emReais(produto.preco * quantidade)})`,
     );
+
+    const sinal = Math.round(total * SINAL_PERCENTUAL) / 100;
 
     const mensagem = [
       "Olá! Gostaria de fazer um pedido:",
@@ -60,6 +79,8 @@ export default function Cardapio() {
       ...linhas,
       "",
       `Total: ${emReais(total)}`,
+      `Sinal de ${SINAL_PERCENTUAL}% para confirmar: ${emReais(sinal)}`,
+      `Restante na entrega: ${emReais(total - sinal)}`,
     ].join("\n");
 
     window.open(
@@ -126,13 +147,10 @@ export default function Cardapio() {
                         &minus;
                       </button>
 
-                      <span
-                        aria-live="polite"
-                        aria-label={`${quantidade} de ${produto.nome}`}
-                        className="w-6 text-center tabular-nums"
-                      >
+                      <output className="min-w-6 text-center tabular-nums">
                         {quantidade}
-                      </span>
+                        <span className="sr-only"> {produto.nome} no pedido</span>
+                      </output>
 
                       <button
                         type="button"
@@ -152,7 +170,7 @@ export default function Cardapio() {
       })}
 
       <div className="sticky bottom-0 border-t border-areia bg-creme py-4">
-        <div className="flex items-center justify-between gap-4">
+        <div className="flex flex-wrap items-center justify-between gap-4">
           <p className="font-titulo text-lg text-cacau">
             Total: <span className="tabular-nums">{emReais(total)}</span>
           </p>
@@ -160,17 +178,17 @@ export default function Cardapio() {
           <button
             type="button"
             onClick={enviarPedido}
-            disabled={vazio}
-            aria-describedby={vazio ? "aviso-carrinho" : undefined}
-            className="rounded-full bg-tijolo px-5 py-2 text-creme disabled:opacity-40"
+            disabled={bloqueado}
+            aria-describedby={aviso ? "aviso-pedido" : undefined}
+            className="ml-auto rounded-full bg-tijolo px-5 py-2 text-creme disabled:opacity-40"
           >
             Enviar pedido
           </button>
         </div>
 
-        {vazio && (
-          <p id="aviso-carrinho" className="mt-2 text-right text-sm">
-            Escolha ao menos um item para enviar o pedido.
+        {aviso && (
+          <p id="aviso-pedido" className="mt-2 text-right text-sm">
+            {aviso}
           </p>
         )}
       </div>

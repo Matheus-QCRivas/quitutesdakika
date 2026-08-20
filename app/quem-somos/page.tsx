@@ -1,5 +1,12 @@
+import type { Metadata } from "next";
 import Image from "next/image";
 import { depoimentos } from "@/lib/depoimentos";
+
+export const metadata: Metadata = {
+  title: "Quem somos",
+  description:
+    "Conheça a Kika, que faz à mão cada quiche e cada doce encomendado em Salvador.",
+};
 
 export default function QuemSomos() {
   return (

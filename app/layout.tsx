@@ -17,11 +17,28 @@ const marckScript = Marck_Script({
   display: "swap",
 });
 
+const DESCRICAO =
+  "Quitutes artesanais sob encomenda em Salvador: quiches e doces feitos à mão, um a um.";
+
 export const metadata: Metadata = {
-  title: "Quitutes da Kika",
-  description: "Quitutes da Kika",
+  // TROCAR no deploy pelo domínio real do site.
+  metadataBase: new URL("https://quitutesdakika.com.br"),
+  title: {
+    default: "Quitutes da Kika",
+    template: "%s | Quitutes da Kika",
+  },
+  description: DESCRICAO,
+  openGraph: {
+    title: "Quitutes da Kika",
+    description: DESCRICAO,
+    locale: "pt_BR",
+    type: "website",
+  },
   icons: {
-    icon: [{ url: "/favicon-32.png", type: "image/png", sizes: "32x32" }],
+    icon: [
+      { url: "/icon.svg", type: "image/svg+xml" },
+      { url: "/favicon-32.png", type: "image/png", sizes: "32x32" },
+    ],
     apple: [{ url: "/apple-touch-icon-180.png", sizes: "180x180" }],
   },
 };

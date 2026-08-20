@@ -4,9 +4,9 @@ import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
-/** Altura de exibição do logo; ajuste a largura conforme a proporção do arquivo. */
+/** Dimensões reais de logo-120h.png (122x120); logo-240h.png é o mesmo em 2x. */
 const LOGO_HEIGHT = 120;
-const LOGO_WIDTH = 120;
+const LOGO_WIDTH = 122;
 
 /**
  * Entrega logo-120h.png em 1x e logo-240h.png em 2x: para imagens de tamanho
@@ -43,7 +43,7 @@ export default function Header() {
       </Link>
 
       <nav>
-        <ul className="flex items-center gap-6">
+        <ul className="flex flex-wrap items-center justify-end gap-x-4 gap-y-1 sm:gap-x-6">
           {links.map(({ href, label }) => {
             const ativo = pathname === href;
 

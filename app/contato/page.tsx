@@ -1,5 +1,19 @@
+import type { Metadata } from "next";
 import Faq from "@/components/Faq";
-import { BAIRROS_ENTREGA, INSTAGRAM, PAGAMENTOS, WHATSAPP } from "@/lib/config";
+import {
+  BAIRROS_ENTREGA,
+  INSTAGRAM,
+  PAGAMENTOS,
+  PRAZO_HORAS,
+  SINAL_PERCENTUAL,
+  WHATSAPP,
+} from "@/lib/config";
+
+export const metadata: Metadata = {
+  title: "Contato",
+  description:
+    "WhatsApp, Instagram, bairros atendidos, formas de pagamento e dúvidas comuns sobre as encomendas.",
+};
 
 export default function Contato() {
   return (
@@ -62,6 +76,12 @@ export default function Contato() {
             </li>
           ))}
         </ul>
+
+        <p className="mt-3 text-sm">
+          Cobro {SINAL_PERCENTUAL}% de sinal para confirmar o pedido e os outros{" "}
+          {100 - SINAL_PERCENTUAL}% na entrega. As {PRAZO_HORAS}h de prazo contam a
+          partir da confirmação do sinal.
+        </p>
       </section>
 
       <section>

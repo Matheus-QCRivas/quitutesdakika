@@ -1,4 +1,11 @@
+import type { Metadata } from "next";
 import Cardapio from "@/components/Cardapio";
+
+export const metadata: Metadata = {
+  title: "Cardápio",
+  description:
+    "Quiches e doces artesanais feitos sob encomenda em Salvador. Monte seu pedido e feche pelo WhatsApp.",
+};
 
 export default function CardapioPage() {
   return (
