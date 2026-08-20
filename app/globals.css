@@ -1,0 +1,6 @@
+@import "tailwindcss";
+@config "../tailwind.config.ts";
+
+body {
+  @apply bg-creme text-oliva;
+}
