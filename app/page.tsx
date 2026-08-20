@@ -27,7 +27,7 @@ export default function Home() {
         </h1>
 
         <p className="mt-3">
-          Salvador &middot; pedidos com {PRAZO_HORAS}h de antecedência
+          Salvador &middot; {PRAZO_HORAS}h a partir da confirmação do sinal
         </p>
 
         <a

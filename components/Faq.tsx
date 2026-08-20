@@ -7,7 +7,7 @@ const PERGUNTAS = [
   {
     id: "prazo",
     pergunta: "Com quanta antecedência preciso pedir?",
-    resposta: `Peço no mínimo ${PRAZO_HORAS}h de antecedência, porque tudo é feito por encomenda, na hora. Em datas comemorativas a agenda fecha antes, então quanto mais cedo você falar comigo, melhor.`,
+    resposta: `Preciso de no mínimo ${PRAZO_HORAS}h, contadas a partir da confirmação do sinal — é aí que eu entro na produção, não na hora em que a gente começa a conversar. Em datas comemorativas a agenda fecha antes, então me chame com folga.`,
   },
   {
     id: "pagamento",
